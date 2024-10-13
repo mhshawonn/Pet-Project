@@ -31,12 +31,17 @@ public class JwtService {
 		return extractClaim(token, Claims::getSubject);
 	}
 	
+	public String getEmailFromToken( String token ) {
+		return extractClaim(token, Claims::getSubject);
+	}
+	
 	public <T> T extractClaim( String token, Function< Claims, T> claimsResolver ) {
 		final Claims claims = extractAllClaims(token);
 		return claimsResolver.apply(claims);
 	}
 	
 	public String generateToken( UserDetails userDetails ){
+		
 		return generateToken( new HashMap<>(), userDetails);
 	}
 	
@@ -55,7 +60,7 @@ public class JwtService {
 				.setClaims(extractClaims)
 				.setSubject(userDetails.getUsername())
 				.setIssuedAt(new Date(System.currentTimeMillis()))
-				.setExpiration(new Date(System.currentTimeMillis() * expiration ))
+				.setExpiration(new Date(new Date().getTime() + 864000000 ))
 				.signWith(getSignInKey(),SignatureAlgorithm.HS256)
 				.compact();
 	}
@@ -74,6 +79,13 @@ public class JwtService {
 	}
 	
 	private Claims extractAllClaims( String token ){
+		
+		System.out.println("claim token : " + token);
+		
+		if(token.startsWith("Bearer ")){
+			token = token.substring(7);
+		}
+		
 		return Jwts
 				.parserBuilder()
 				.setSigningKey(getSignInKey())
@@ -85,20 +97,5 @@ public class JwtService {
 	private Key getSignInKey(){
 		byte[]  keyBytes = Decoders.BASE64.decode(secretKey);
 		return Keys.hmacShaKeyFor(keyBytes);
-		//return Keys.hmacShaKeyFor(secretKey.getBytes());
-		
-//		try {
-//			// Decode the base64-encoded private key (ensure your `secretKey` is the EC private key in base64 format)
-//			byte[] keyBytes = Base64.getDecoder().decode(secretKey);
-//
-//			// Use the KeyFactory to generate the PrivateKey from the keyBytes
-//			PKCS8EncodedKeySpec keySpec = new PKCS8EncodedKeySpec(keyBytes);
-//			KeyFactory keyFactory = KeyFactory.getInstance("EC");
-//			PrivateKey privateKey = keyFactory.generatePrivate(keySpec);
-//
-//			return privateKey;
-//		} catch (Exception e) {
-//			throw new IllegalStateException("Invalid Private Key", e);
-//		}
 	}
 }

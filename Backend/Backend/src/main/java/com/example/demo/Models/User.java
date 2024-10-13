@@ -7,9 +7,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.time.LocalDateTime;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 @Entity
 @Table(name = "users")
@@ -23,8 +21,8 @@ public class User implements UserDetails {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 	
-	@Column(name = "username", nullable = false, unique = true)
-	private String username;
+	@Column(name = "name", nullable = false)
+	private String name;
 	
 	@Column(name = "email", nullable = false, unique = true)
 	private String email;
@@ -41,8 +39,9 @@ public class User implements UserDetails {
 	@Column(name = "verification_expiration")
 	private LocalDateTime verificationCodeExpiresAt;
 	
-	public User( String username, String email, String encodedPassword)  {
-		this.username = username;
+	
+	public User( String name, String email, String encodedPassword)  {
+		this.name = name;
 		this.email = email;
 		this.password = encodedPassword;
 	}
@@ -51,6 +50,11 @@ public class User implements UserDetails {
 	@Override
 	public Collection<? extends GrantedAuthority > getAuthorities() {
 		return List.of();
+	}
+	
+	@Override
+	public String getUsername() {
+		return email;
 	}
 	
 	@Override
