@@ -1,5 +1,6 @@
 package com.pet.Pet.Service;
 
+import com.pet.Pet.Exceptions.UserException;
 import com.pet.Pet.Model.Address;
 import com.pet.Pet.Model.UserPrincipal;
 import com.pet.Pet.Model.Users;
@@ -18,6 +19,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.List;
+import java.util.Optional;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
@@ -145,6 +148,7 @@ public class UserService {
     }
 
     public Users getProfile(Long id) {
+
         return usersRepo.findById(id).orElse(null);
     }
 
@@ -156,4 +160,25 @@ public class UserService {
         usersRepo.save(user);
         return "Address updated";
     }
+
+
+
+    ////////////////////////////  For Chat  ////////////////////////////
+    public Users findUserById( Long id ) throws UserException {
+
+        Optional<Users> opt = usersRepo.findById(id);
+
+        if(opt.isPresent()){
+            return (Users) opt.get();
+        }
+
+        throw new UserException("User not found with id "+ id);
+    }
+
+    public List< Users > searchUser(String query ) {
+        List<Users> users = usersRepo.searchUser(query);
+        return users;
+    }
+
+
 }

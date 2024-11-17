@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -106,6 +107,18 @@ public class UserController {
     @GetMapping("/upadteAddress/{id}")
     public String updateAddress(@PathVariable Long id) {
         return userService.updateAddress(id);
+    }
+
+    @GetMapping("/search")
+    public ResponseEntity<List<Users>> searchUserHandler(@RequestParam("name") String name){
+
+        System.out.println("query : " + name);
+
+        List<Users> users = userService.searchUser(name);
+
+        System.out.println("users : " + users);
+
+        return new ResponseEntity<>(users, HttpStatus.OK);
     }
 
 }

@@ -44,7 +44,8 @@ public class SecuirityConfig {
                     .authorizeHttpRequests(request->request
                             .requestMatchers("/user/register","/user/verify/**","/user/isHas/**",
                                     "/user/login","/user/reSentOtp/**","/user/isHasEmail/**","/pet/get/**",
-                                    "pet/getPet/**","/user/Profile/**")
+                                    "pet/getPet/**","/user/Profile/**","/swagger-ui/**","/swagger-resources/**"
+                            ,"/swagger-ui.html","/v3/api-docs/**","/v3/api-docs/**")
                             .permitAll()
                             .anyRequest().authenticated())
                     .httpBasic(Customizer.withDefaults())
