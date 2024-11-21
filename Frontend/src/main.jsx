@@ -1,4 +1,3 @@
-
 import ReactDOM from 'react-dom/client';
 import App from './App';
 import {createBrowserRouter,RouterProvider } from "react-router-dom";
@@ -10,9 +9,8 @@ import Profile from './Profile/ProfilePost';
 import Pet from './assets/Pet/Feed/Pet';
 import LogIn from "../src/LogIn/LogIn"
 import SignUp from "../src/LogIn/SignUp"
-
-
-
+import ChatCard from '../src/Components/ChatCard/ChatCard'
+import MessageCard from '../src/Components/MessageCard/MessageCard'
 
 
 const router = createBrowserRouter([
@@ -41,11 +39,15 @@ const router = createBrowserRouter([
       {
         path:"/login",
         element:<LogIn/>
-    },
-    {
+      },
+      {
       path:"/signup",
       element:<SignUp/>
-  },
+      },
+      {
+        path:"/chat",
+        element:<ChatCard/>
+        },      
       ]
     },
     
